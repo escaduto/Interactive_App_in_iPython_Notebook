@@ -1,0 +1,49 @@
+"""
+https://ridb.recreation.gov/api/v1/facilities?query=Campground&offset=0&state=CA
+
+FACILITY = {"FacilityID" STRING, "LegacyFacilityID" STRING, "OrgFacilityID" STRING,
+  "ParentOrgID" STRING, "ParentRecAreaID" STRING, "FacilityName" STRING, 
+  "FacilityDescription" STRING, "FacilityTypeDescription" STRING, "FacilityUseFeeDescription" STRING,
+  "FacilityDirections" STRING, "FacilityPhone" STRING, "FacilityEmail" STRING,
+  "FacilityReservationURL" STRING, "FacilityMapURL" STRING, "FacilityAdaAccess" STRING, 
+  "GEOJSON": {"TYPE": "Point", "COORDINATES": [Longitude, Latitude]},
+  "FacilityLongitude" , "FacilityLatitude","Keywords" STRING, "StayLimit" STRING,
+  "Reservable", "Enabled", "LastUpdatedDate"
+  }
+
+based on get_facilities_data() .db 
+
+https://ridb.recreation.gov/api/v1/facilities/234072/campsites?limit=10&offset=0
+
+CAMPSITE = "CampsiteID", "FacilityID", "CampsiteName", "CampsiteType", "TypeOfUse",
+  "Loop", "CampsiteAccessible", "CampsiteLongitude", "CampsiteLatitude", 
+  "CreatedDate", "LastUpdatedDate", 
+  "ATTRIBUTES": [ 'BBQ, "CAMPFIRE RINGS","WATER SPIGOT","PICNIC TABLES","Shade","Checkin Time",
+  "Electricity Hookup","Water Hookup", "Capacity/Size Rating","Driveway Surface",
+  "Max Vehicle Length","Site Width", "Site Height/Overhead Clearance","Driveway Grade",
+  "Max Num of Vehicles","Tent Pad Length","Double Driveway","Min Num of Vehicles","Site Length",
+  "Driveway Length","Max Num of People","Picnic Table","Driveway Entry","Tent Pad Width",
+  "IS EQUIPMENT MANDATORY","Checkout Time","Min Num of People","Campfire Allowed","Pets Allowed"]
+    {
+      "AttributeName":,
+      "AttributeValue": 
+    }
+
+    CREATE_CAMPSITE_TABLE = """CREATE TABLE IF NOT EXISTS campsite_ridb (
+    CampsiteID TEXT,
+    FacilityID TEXT,
+    CampsiteName TEXT, 
+    CampsiteType TEXT,
+    TypeOfUse TEXT,
+    Loop TEXT,
+    CampsiteLongitude TEXT,
+    CampsiteLatitude TEXT,
+    Checkin Time TEXT,
+    Checkout Time TEXT,
+    Electricity Hookup TEXT,
+    Water Hookup TEXT,
+    Max Num of People REAL,
+    Pets Allowed TEXT
+
+);"""
+"""

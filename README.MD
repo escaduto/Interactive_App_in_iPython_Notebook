@@ -1,4 +1,4 @@
-# A Comprehensive Guide to: <u>Understanding Fire Driver’s Across California’s Diverse Ecoregions</u>
+# How to use ipywidget, folium, and API calls to build mini app</u>
 
 ## Table of Contents  
 - [Setup](#Setup)  

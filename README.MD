@@ -1,4 +1,4 @@
-# Creating Interactive Applications in an iPython Notebook via ipywidget, folium, and API</u>
+# Creating Interactive Applications in an iPython Notebook Environment via ipywidget, folium, and API</u>
 
 ## Table of Contents  
 - [Project Details](#project-details)  
@@ -6,16 +6,16 @@
 - [Primary Packages & Tools](#primary-packages-&-tools) 
 - [Data Sources](#data-sources)  
 - [Walk-Through](#walk-through)  
-    1. [Interactive Mapping](##interactive-mapping)  
-    2. [Filtering Search](##filtering-search)  
-    3. [Visualizing Search](##visualizing-search)   
-    4. [Accessing Real-Time Data](##accessing-real-time-data)  
-    5. [Summarizing Results](##summarizing-result)  
+    1. [Interactive Mapping](#(1)-interactive-mapping)  
+    2. [Filtering Search](#(2)-filtering-search)  
+    3. [Visualizing Search](#(3)-visualizing-search)   
+    4. [Accessing Real-Time Data](#(4)-accessing-real-time-data)  
+    5. [Summarizing Results](#(5)-summarizing-results)  
 ___
 
 ## Project Details
 
-This project serves to leverage tools within an iPython notebook environment to aid in the development of an interactive user interface for exploring campgrounds in California. More specifically, the application will allow users to identify the availability of a particular campground, based on a series of search criterias regarding location, campsite amenities, and conditions. This immersive experience is primarily made possible by folium, and ipywidget packages. 
+This project serves to leverage tools within an iPython notebook environment to aid in the development of an interactive user interface for exploring campgrounds within California. The application will allow users to identify the availability of a particular campground, based on a series of search criterias regarding location, campsite amenities, and various other conditions. This immersive experience is made possible by an array of packages, mainly folium and ipywidget. 
 
 The application calls on several data retrieval methods, including API and webscraping in an effort to consolidate static data and real-time information that are fed into a database. The resulting data is then presented to the user in an informative visualization output that shows the availability of selected campsites within a specified time period. 
 
@@ -26,7 +26,7 @@ The initial search interface provides the spatial context and distribution of ca
 
 Create an `.env` file by copying the `.env.example` and renaming it to `.env`. Replace the keys with your API_KEY
 
-## Primary Packages & Tool
+## Primary Packages & Tools
 
 - folium 
 - ipywidget
@@ -49,7 +49,7 @@ While the general information of campground sites and facilities were extracted 
 
 ## Walk-Through
 
-### 1. <b>Interactive mapping</b> 
+## (1) Interactive mapping
 
 The initial step of the application allows user to interactively search through campground facilities across the state of California. To do this, we added a map where users can navigate through various regions and even search for a campground of choice. 
 
@@ -60,7 +60,7 @@ Folium has extensions to easily add various tools within the map, most notable i
 
 <br><br>
 
-### 2. <b>Filtering Search</b>
+## (2) Filtering Search
 
 After using the interactive map to inform selection of a campground of interest, the buttons on the left-hand side of the panel allow users to specify their preference in amenities. The ipywidget package enables an immersive user experience, allowing increased control over search and data filteration aspects. As seen in the example, there are a wide variety of widgets for each situation, allowing for the intuituve toggling, sliding, and selecting of various search components. 
 
@@ -71,7 +71,7 @@ The search components include: use type (e.g. overnight or day-use), pets, numbe
 
 <br><br>
 
-### 3. <b>Visualizing Search </b>
+## (3) Visualizing Search
 
 The Search Camp interface shows the locations for the particular campground that satisfies the user-specified search criteria in orange. The user has the ability to navigate around the entire campground and take a note on the different features for each unique space. While there are additional attributes associated with each site, we limit the search widgets to only deal with the most common search-use cases. 
 
@@ -82,7 +82,7 @@ The smaller gray points are designated for sites that do not meet the search cri
 
 <br><br>
 
-### 4. <b>Accessing Real-Time Data</b>
+## (4) Accessing Real-Time Data
 
 The primary function of this second tab is to further narrow down the time range and campsites of interest. ipywidget provides a comprehensive date picker, where users can select dates from a calendar dropdown. 
 
@@ -92,7 +92,7 @@ Additionally, the feature to select multiple sites provides the user with furthe
 
 <br><br>
 
-### 5. <b>Summarizing Results</b>
+## (5) Summarizing Results
 
 Lastly, when all preferences are taking into consideration, the application calls on the url to retrieve the availability of the selected campsites in real-time. We decided a heatmap would suffice. The calendar style heatmap allows the user to observe days in the year where the campsites of interest are available or not. The 
 
@@ -100,7 +100,8 @@ Furthermore, outputs from each unique search can be consolidated in the final ta
 
 <img src="docs/gif/tab3_results_B.gif" alt="tab3_results_B">
 
-Additional features could be implemented further down the road including: (1) being able to download the results into a pdf or output file, (2) performing a cron job alerting the user if a particular day for a particular campsite becomes available, and/or (3) outputing to a web application using packages not limited to Voila.
+<br><br>
+Additional features can be implemented further down the road including: (1) ability to download results into a pdf or output file, (2) performing a cron job alerting the user if a particular day for a particular campsite becomes available, and/or (3) outputing to a web application using packages not limited to Voila.
 
 
 

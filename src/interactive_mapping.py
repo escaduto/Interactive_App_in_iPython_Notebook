@@ -97,7 +97,6 @@ def interactive_facilities_map(facilities_nm):
     maploc.add_child(minimap)
     plugins.Geocoder().add_to(maploc)
 
-
     maploc.save("../docs/facility_map.html")
     return maploc
 
@@ -130,13 +129,5 @@ def interactive_campsite_map(campsite_lst, campsite_nm, facility_id):
                                             tooltip=campsites['CampsiteName'].iloc[cmp_pnt]).add_to(maploc)
 
     return maploc
-
-
-
-#radius=float(campsites['icon_size'].iloc[cmp_pnt])
-
-        
-
-
 
     

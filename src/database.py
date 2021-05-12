@@ -5,15 +5,16 @@ from sqlalchemy import create_engine
 from geoprocessing import filter_CA_bounds
 from dotenv import load_dotenv
 from collections import defaultdict
+import geopandas as gpd
 
 # 1) access RIDB API [OK]
 # 2) connect to sqlite db [OK]
 # 3) create SQL database to save facilities (campground) data within CALIFORNIA [OK]
 # 4) create SQL database to save campsite data based on facilities ID [OK]
-# 5) clean and combined attributes into main.db and perform queries  
-# 6) based on user inputted campsite, get availability (based on another api) 
-# 7) email availability + site descriptions + possible closures/warnings 
-# 8) perform cron job to auto send availability of campsite @7:15am 
+# 5) clean and combined attributes into main.db and perform queries  [OK]
+# 6) based on user inputted campsite, get availability (based on another api) [OK]
+# 7) email availability + site descriptions + possible closures/warnings [ONHOLD]
+# 8) perform cron job to auto send availability of campsite @7:15am [ONHOLD]
 
 cwd = os.getcwd()
 #-------------------------------------------------------------------------------------#
@@ -202,8 +203,45 @@ with connection:
 
 # create_campsites_db(all_CA_facility_id) 
 
-#6) add facilities name, lat/long based on ID into campsite csv 
+#-------------------------------------------------------------------------------------#
+
+#6) FINAL CLEANING: add facilities name, lat/long based on ID into campsite csv 
 
 
+def clean_campsitedf(campsite_pth = '../data/campsites_CA.geojson', facilities_pth = '../data/facility_CA.geojson'):
+    campsite_df = gpd.read_file(campsite_pth)
+    facilities_df = gpd.read_file(facilities_pth)
+
+    campsite_df['FacilityID'] = campsite_df['FacilityID'].astype(str)
+
+    camp_df = campsite_df.merge(facilities_df, how = 'left', on='FacilityID')
+    camp_df['Reservable'] = camp_df['Reservable'].astype(bool)
+    camp_df['CampsiteLongitude'] = np.where((camp_df.CampsiteLongitude == 0.0),camp_df.FacilityLongitude, camp_df.CampsiteLongitude)
+    camp_df['CampsiteLatitude'] = np.where((camp_df.CampsiteLatitude == 0.0),camp_df.FacilityLatitude, camp_df.CampsiteLatitude)
+    camp_df = camp_df.drop(columns=['geometry_x', 'geometry_y'])
+    camp_df = gpd.GeoDataFrame(camp_df, geometry=gpd.points_from_xy(camp_df['CampsiteLongitude'], camp_df['CampsiteLatitude']))
+
+    camp_df.to_file('../data/complete_campsites_CA.geojson', driver='GeoJSON')
+    return camp_df
 
 
+def clean_facilitydf():
+    facil_df = clean_campsitedf()
+
+    camp_count = facil_df[['FacilityID', 'CampsiteID']].groupby(['FacilityID']).agg(['count']).reset_index()
+    camp_count.columns = ['FacilityID', 'TotalCampsites']
+
+    facil_df = camp_df.merge(camp_count, how = 'left', on='FacilityID')
+    facil_df = facil_df.drop(columns=['geometry'])
+    facil_df = gpd.GeoDataFrame(facil_df, geometry=gpd.points_from_xy(camp_df['FacilityLongitude'], camp_df['FacilityLatitude']))
+
+    keep_columns_2 = ['FacilityID', 'FacilityName', 'TotalCampsites', 'FacilityDescription',
+        'ParentRecAreaID', 'FacilityTypeDescription', 'FacilityLongitude',
+        'FacilityLatitude', 'Reservable', 'STATE_NAME', 'geometry']
+
+    facil_df = facil_df[keep_columns_2].drop_duplicates()
+
+    facil_df.to_file('../data/complete_facility_CA.geojson', driver='GeoJSON')
+
+
+# clean_facilitydf()

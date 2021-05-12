@@ -63,11 +63,15 @@ def create_facilities_db():
     '''
 
     complete_df = pd.DataFrame()
-
-    for i in range(-50, 20000 + 1, 50):
+    counter += 1 
+    for i in range(0, 20000 + 1, 50):
+        counter += 1 
         url = f'https://ridb.recreation.gov/api/v1/facilities?limit=50&offset={str(i)}'
 
         facilities_dict = access_RIDB_API(url)
+
+        if len(facilities_dict['RECDATA']) == 0:
+            break 
 
         my_dict = {"FacilityID": [],"FacilityName":[], "FacilityDescription":[], 'ParentRecAreaID': [] ,
         "FacilityTypeDescription":[], "FacilityLongitude":[], "FacilityLatitude":[], 'Reservable': []}
@@ -185,7 +189,7 @@ def create_campsites_db(all_facility_id):
 
 # 5) After connected to sqlite, create db for facilities and campsites 
 
-# all_CA_facility_id = create_facilities_db()
+all_CA_facility_id = create_facilities_db()
 
 GET_ALL_FACILITIES_ID = """ SELECT FacilityID FROM facilities_db """
 
@@ -196,7 +200,7 @@ with connection:
     print("retrieving facilities id in California.")
     all_CA_facility_id = [int(a_tuple[0]) for a_tuple in all_CA_facility_id]
 
-create_campsites_db(all_CA_facility_id) 
+# create_campsites_db(all_CA_facility_id) 
 
 #6) add facilities name, lat/long based on ID into campsite csv 
 

@@ -1,6 +1,8 @@
 import urllib3, re
 from bs4 import BeautifulSoup
 import pandas as pd 
+import geopandas as gpd
+import json
 
 """
 Consolidate campsite information from rec.gov site into database. 
@@ -63,5 +65,44 @@ def get_unique_campsite_url(root_url):
 
 
 
+def get_key(val, my_dict):
+    dates_lst = [] 
+    for key, value in my_dict.items():
+         if val == value:
+             dates_lst.append(key)
+    return dates_lst
+ 
 
+def get_availability(facilityid, camp_id_lst, start_dt, end_dt, campsite_nm):
+    camp_name = [] 
+    avail = []
+    reserv =[]
+    nonreserv =[]
+    
+    
+    campsite_df = gpd.read_file(campsite_nm)
+    
+    for camp_id in camp_id_lst:   
+        print(camp_id)     
+        df = campsite_df[(campsite_df['FacilityID'].astype(str) == facilityid) & (campsite_df['CampsiteName'].astype(str) == camp_id)]
+        campsite_name = df.iloc[0]['CampsiteID']
+        url = f'https://www.recreation.gov/api/camps/availability/campsite/{campsite_name}?start_date={start_dt}T00%3A00%3A00.000Z&end_date={end_dt}T00%3A00%3A00.000Z'
+        soup = access_website(url)
+        j = json.loads(soup.text)
+        raw_dic = j['availability']['availabilities']
+        
+        camp_name.append(camp_id)
+        avail.append(get_key('Available', raw_dic))
+        reserv.append(get_key('Reserved', raw_dic))
+        nonreserv.append(get_key('Not Reservable', raw_dic))
+        
+    avail_dic = {'CampsiteName': camp_name, 'Available': avail, 'Reserved': reserv, 'Not Reservable': nonreserv}   
 
+    return avail_dic
+
+        
+
+        
+# new_avail = {'Available' : avail_dic["Available"] + get_key('Available', raw_dic)}
+# new_reserv = {'Reserved' : avail_dic["Reserved"] + get_key('Reserved', raw_dic)}
+# new_noreserv = {'Not Reservable' : avail_dic["Not Reservable"] + get_key('Not Reservable', raw_dic)}

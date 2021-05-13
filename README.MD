@@ -11,7 +11,7 @@
     3. [Visualizing Search](#(3)-visualizing-search)   
     4. [Accessing Real-Time Data](#(4)-accessing-real-time-data)  
     5. [Summarizing Results](#(5)-summarizing-results)  
-    6. [Supplemental Features](#(6)supplemental-features)
+    6. [Supplemental Features](#(6)-supplemental-features)
 ___
 
 ## Project Details
